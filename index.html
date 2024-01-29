@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image-Based Recipe Generation</title>
+</head>
+<body>
+    <h1>Image-Based Recipe Generator</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Generate Recipe</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/generate', {
+                method: 'POST',
+                body: formData
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            
+            const data = await response.json();
+            if (data.success) {
+                document.getElementById('result').innerHTML = data.data;
+            } else {
+                document.getElementById('result').textContent = 'Error in generating recipe';
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
