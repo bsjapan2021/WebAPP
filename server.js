@@ -11,7 +11,7 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
-const API_KEY = "AIzaSyB-qf29hn2qvXj-Hz0hlAzSNi9gA5dXJFI"; // 여기에 실제 API 키를 입력하세요
+const API_KEY = "Your API Key"; // 여기에 실제 API 키를 입력하세요
 const MODEL_NAME = "gemini-pro-vision";
 
 
