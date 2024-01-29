@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image-Based Recipe Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #008cba;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005f73;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Recipe Generator</h2>
+        <input type="file" id="imageInput" accept="image/jpeg" required>
+        <button onclick="generateRecipe()">Generate Recipe</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function generateRecipe() {
+            const imageInput = document.getElementById('imageInput');
+            if (imageInput.files.length === 0) {
+                alert('Please select an image file.');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('image', imageInput.files[0]);
+
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = 'Generating recipe...';
+
+            try {
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+
+                const data = await response.json();
+                if (data.success) {
+                    resultElement.innerHTML = `<strong>Generated Recipe:</strong> ${data.data.text}`;
+                } else {
+                    resultElement.textContent = 'Failed to generate recipe.';
+                }
+            } catch (error) {
+                resultElement.textContent = error.message;
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
